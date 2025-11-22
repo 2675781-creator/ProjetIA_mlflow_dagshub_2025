@@ -1,0 +1,12 @@
+pandas
+joblib
+scipy
+numpy
+dagshub
+sys
+mlflow
+seaborn == 13.2
+matplotlib.pyplot
+sklearn == 1.4.1
+Flask
+pydantic 

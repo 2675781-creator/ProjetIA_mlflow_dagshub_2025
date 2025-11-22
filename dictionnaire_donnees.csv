@@ -1,0 +1,36 @@
+﻿Variables;Type;Description;Valeurs attendu
+School;Catégoriel;Établissement fréquenter par l’étudiant;‘GP’, ‘MS’
+Sex;Catégoriel;Sexe de l’étudiant;‘F’, ‘M’
+Age;Numérique;Âge de l’étudiant;‘18’, ‘17’, ‘15’, ‘16’, ’19’, etc.
+Address;Catégoriel;L’adresse de l’étudiant en zone urbain ou rural;‘U’ – urban, ‘R’ - rural
+G1;Numérique;Note sommatif premier examen;‘10’, ‘19’, ‘11’, ‘13’, ‘14’, etc.
+G2;Numérique;Note sommatif second examen;‘13’, ‘12’, ‘10’, etc.
+G3;Numérique;Note finale de l’étudiant;‘11’, ‘14’, ‘16’, etc.
+Absences;Numérique;Nombre d’absence de chaque étudiant à un cours;‘6’, ‘2’, ‘8’, etc.
+Health;Numérique;Statue de la santé de chaque étudiant (5 excellent – 1 très mauvaise);‘5’, ‘4’, ‘3’, ‘2’, ‘1’
+Walc;Numérique;Consommation d’alcool durant la fin de semaine;1, 5, etc
+Dalc;Numérique;Consommation d’alcool durant les jours d’étude;1, 5, etc
+Goout;Numérique;Fréquence de sorti avec ses amis;1, 5, etc
+Freetime;Numérique;Fréquence de temps libre que l’étudiant s’accorde après les cours;1, 5, etc
+Famrel;Numérique;La qualité de la relation familiale de l’étudiant;1, 5, etc
+Failures;Numérique;Le nombre d’échec de classe durant les derniers semestres;0, 2, 1, 3
+Studytime;Numérique;Le temps qu’un étudiant ait passé à étudié par heures;1, 2, 3, 4
+Traveltime;Numérique;Le temps qu’un étudiant mette afin d’arriver à l’université (minutes à une heure ou plus);1, 2,3 ,4
+Medu;Numérique;Le niveau de l’éducation de la mère;0(none), 1(4th grade), 2(5th to 9th grade), 3(secondary), 4(higher education)
+Fedu;Numérique;Le niveau d’éducation du père;0(none), 1(4th grade), 2(5th to 9th grade), 3(secondary), 4(higher education)
+Mjob;Catégoriel;Le type de travail effectué par le père de l’étudiant;« teacher, health »
+Fjob;Catégoriel;Le domaine de travail effectué par la mère de l’étudiant;« other, at_home »
+Reason;Catégoriel;Raison pour laquelle l’étudiant a choisi cette université;« course, school reputation»
+Success(variable cible);Numérique;Si l’étudiant va réussir à passer son premier semestre;0 (échec), 1 (succès)
+Sex;Catégoriel;Le sexe de l’étudiant;F – female, M - Male
+Pstatus;Catégoriel;Le statut de la cohabitation de chaque parents;T/A
+Famsize;Catégoriel;La taille de la famille;LE3/GT3
+Guardian;Catégoriel;Le gardien de l’étudiant;Mother/father, other
+Schoolsup;Booléan;Support en éducation d’extra;Yes/no
+Famsup;Booléan;Support familial en éducaiton;Yes/no
+Paid;Booléan;Payer extra les classes dans le sujet du cours;Yes/no
+Activities;Booléan;Activités extra curriculaire;Yes/no
+Nursery;Booléan;Étudie en école de médecin;Yes/no
+Higher;Booléan;Désire prendre une éducation avancée;Yes/no
+Internet;Booléan;Accès à l’internet à la maison;Yes/no
+Romantic;Booléan;A une relation romantique;Yes/no
