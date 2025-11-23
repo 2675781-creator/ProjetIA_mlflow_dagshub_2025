@@ -1,8 +1,6 @@
 from functools import lru_cache
 from pathlib import Path
-
 import joblib
-
 
 MODEL_SOURCE = "local"
 

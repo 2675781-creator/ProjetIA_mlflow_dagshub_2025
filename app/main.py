@@ -14,8 +14,8 @@ app = Flask(__name__)
 class DonneesEntree(BaseModel):
     age: float
     famsize: float
-    Medu: float
-    Fedu: float
+    Medu: int
+    Fedu: int
     Mjob: float
     Fjob: float
     traveltime: float
@@ -50,31 +50,32 @@ class DonneesEntree(BaseModel):
     schoolsup_yes: int
     Pstatus_A: int
     Pstatus_T: int
-    sex_F: float
-    sex_M: float
-    address_R: float
-    address_U: float
-    reason_course: float
-    reason_home: float
-    reason_other: float
-    reason_reputation: float
-    guardian_father: float
-    guardian_mother: float
-    guardian_other: float
+    sex_F: int
+    sex_M: int
+    address_R: int
+    address_U: int
+    reason_course: int
+    reason_home: int
+    reason_other: int
+    reason_reputation: int
+    guardian_father: int
+    guardian_mother: int
+    guardian_other: int
 
 
 @app.route("/", methods=["GET"])
 def accueil():
     """Message d'accueil pour vérifier que l'api fonctionne."""
-    return jsonify({"message": "API de prédiction d'échec étudiant opérationnel"})
+    return jsonify({"message": "API de prediction echec etudiant operationnel"})
 
 
 @app.route("/test", methods=["GET"])
 def test():
     return "TEST OK"
 
-RECALL_TEST = 80.5
 
+
+RECALL_TEST = 80.5
 
 @app.route("/predire", methods=["POST"])
 def predire():
@@ -97,7 +98,6 @@ def predire():
 
         # 2.b) Adapter les noms de colonnes à ceux utilisés pour entraîner le modèle
         donnees_df = donnees_df.rename(columns={
-            "famsize": "Taille de la famille",
             "school_GP": "school GP",
             "school_MS": "school MS",
             "romantic_no": "romantic no",
@@ -109,7 +109,7 @@ def predire():
             "activities_no": "activities no",
             "activities_yes": "activities yes",
             "higher_no": "higher no",
-            "higher_yes": "higher_yes",
+            "higher_yes": "higher yes",
             "paid_no": "paid no",
             "paid_yes": "paid yes",
             "famsup_no": "famsup no",
