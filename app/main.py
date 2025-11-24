@@ -12,6 +12,7 @@ features = charger_features()
 
 app = Flask(__name__)
 
+#print(features)
 
 class DonneesEntree(BaseModel):
     age: int
@@ -32,7 +33,6 @@ class DonneesEntree(BaseModel):
     absences: int
     G1: int
     G2: int
-    G3: int
     school: str
     romantic: str
     internet: str
@@ -82,50 +82,24 @@ def predire():
         # 2) Transformer en DataFrame (format attendu par le modèle)
         donnees_df = pd.DataFrame([donnees.model_dump()])
 
-        # 2.b) Adapter les noms de colonnes à ceux utilisés pour entraîner le modèle
-        #donnees_df = donnees_df.rename(columns={
-       #     "school_GP": "school GP",
-       #     "school_MS": "school MS",
-       #     "romantic_no": "romantic no",
-        #    "romantic_yes": "romantic yes",
-        #    "internet_no": "internet no",
-        #    "internet_yes": "internet yes",
-         #   "nursery_no": "nursery no",
-        #    "nursery_yes": "nursery yes",
-         #   "activities_no": "activities no",
-        #    "activities_yes": "activities yes",
-         #   "higher_no": "higher no",
-         #   "higher_yes": "higher yes",
-        #    "paid_no": "paid no",
-         #   "paid_yes": "paid yes",
-          #  "famsup_no": "famsup no",
-          #  "famsup_yes": "famsup yes",
-          #  "schoolsup_no": "schoolsup no",
-           # "schoolsup_yes": "schoolsup yes",
-          #  "Pstatus_A": "Pstatus A",
-          #  "Pstatus_T": "Pstatus T",
-          #  "sex_F": "sex F",
-          #  "sex_M": "sex M",
-          #  "address_R": "address R",
-          #  "address_U": "address U",
-          #  "reason_course": "reason course",
-          #  "reason_home": "reason home",
-          #  "reason_other": "reason other",
-          #  "reason_reputation": "reason reputation",
-          #  "guardian_father": "guardian father",
-          #  "guardian_mother": "guardian mother",
-          #  "guardian_other": "guardian other"
-        #})
 
-        donnees_encoded = pd.get_dummies(donnees_df)
+        donnees_encoded = pd.get_dummies(donnees_df, drop_first=False)
         
         donnees_encoded = donnees_encoded.reindex(columns=features, fill_value=0)
 
+        #print(donnees_encoded.head())
+
+        # convertir tous les bolléeans en int
+        donnees_encoded = donnees_encoded
         # 3) Faire la prédiction de la classe
         classe_prediction = int(modele.predict(donnees_encoded)[0])
 
         # probabilités pour chaque classe
         probas = modele.predict_proba(donnees_encoded)[0]
+
+        seuil_echec = 0.3
+
+        classe_prediction = 0 if probas[0] >= seuil_echec else 1
         
         # 3.b) Construire un intervalle de confiance SIMPLE
         #borne_inferieure = prediction - RECALL_TEST
@@ -137,8 +111,9 @@ def predire():
         # 4) Préparer la réponse
         resultat = donnees.model_dump()
         resultat["prediction"] = classe_prediction
-        resultat["probabilite_echec"] = float(probas[0])
+        resultat["probabilite_echec"] = float(probas[0]) 
         resultat["probabilite_reussite"] = float(probas[1])
+        resultat["confiance_prediction"] = float(max(probas))
 
         # 5) Enregistrer la requête dans un fichier JSONL pour analyse
         log_request(donnees.model_dump(), classe_prediction)

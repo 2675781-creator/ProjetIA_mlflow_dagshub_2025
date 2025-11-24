@@ -60,3 +60,25 @@ Certain variables ont du passer de float à int
 # 5 définition du fichier test_api
 
 Ce fichier me permettra de savoir si mon API fonctionne.
+
+# 24 novembre 2025
+# 6 chargement de la liste des colonnes utilisées à l'entrainement (X_train.columns)
+
+Les colonnes d'entrainements situés dans le modèle 'modele_tree.pkl'. Sont utilisée pour s'assurer que notre API utilise les colonnes encodés
+
+# 24 novembre 2025
+# 7 seuil de d'échec
+Définition du seuil d'échec pour s'assurer que modèle prédit bien si l'étudiant va échouer malgré le déséquilibre des données.
+
+
+# 24 novembre 2025
+# 8 Dockerfile
+
+Création de l'image du docker
+
+
+# 24 novembre 2025 
+# 9 test de différent point d'accès
+
+
+

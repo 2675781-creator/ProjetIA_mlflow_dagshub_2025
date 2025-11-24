@@ -1,0 +1,14 @@
+# Dossier à exclure
+mlruns/
+__pycache__/
+.projetIA_2025/
+notebooks/
+
+
+# fichier inutile
+*.ipynb
+*.csv
+*xlsx
+*.log
+*.md~­
+.DS_store
