@@ -1,0 +1,1 @@
+[('tree', DecisionTreeClassifier(class_weight='balanced', max_depth=50))]

@@ -1,56 +1,58 @@
 ```bash
-curl -X POST http://127.0.0.1:8000/predire \ 
-     -H "Content-Type: application/json" \ 
-     -d '{ 
+$body = '{ 
         "age": 27,
         "famsize": 1,
-        "Medu": 0
-        "Fedu": 4
-        "Mjob": 0.831633
-        "Fjob": 
-        "traveltime": 
-        "studytime": 
-        "failures": 
-        "famrel":
-        "freetime":
-        "goout":
-        "Dalc": 
-        "Walc": 
-        "health":
-        "absences": 
-        "G1":
-        "G2": 
-        "school GP":
-        "school_MS":
-        "romantic_no":
-        "romantic_yes":
-    internet_no: int
-    internet_yes: int
-    nursery_no: int
-    nursery_yes: int
-    activities_no: int
-    activities_yes: int
-    higher_no: int
-    higher_yes: int
-    paid_no: int
-    paid_yes: int
-    famsup_no: int
-    famsup_yes: int
-    schoolsup_no: int
-    schoolsup_yes: int
-    Pstatus_A: int
-    Pstatus_T: int
-    sex_F: float
-    sex_M: float
-    address_R: float
-    address_U: float
-    reason_course: float
-    reason_home: float
-    reason_other: float
-    reason_reputation: float
-    guardian_father: float
-    guardian_mother: float
-    guardian_other: float
+        "Medu": 0,
+        "Fedu": 4,
+        "Mjob": 0.0,
+        "Fjob": 0.8742,
+        "traveltime": 2,
+        "studytime": 3,
+        "failures": 1,
+        "famrel": 1,
+        "freetime": 1,
+        "goout": 1,
+        "Dalc": 1,
+        "Walc": 1,
+        "health": 5,
+        "absences": 0,
+        "G1": 15,
+        "G2": 12,
+        "school_GP": 1,
+        "school_MS": 0,
+        "romantic_no": 1,
+        "romantic_yes": 0,
+        "internet_no": 0,
+        "internet_yes": 1,
+        "nursery_no": 0,
+        "nursery_yes": 1,
+        "activities_no": 0,
+        "activities_yes": 1,
+        "higher_no": 1,
+        "higher_yes": 0,
+        "paid_no": 0,
+        "paid_yes": 1,
+        "famsup_no": 0,
+        "famsup_yes": 1,
+        "schoolsup_no": 0,
+        "schoolsup_yes": 1,
+        "Pstatus_A": 0,
+        "Pstatus_T": 1,
+        "sex_F": 0,
+        "sex_M": 1,
+        "address_R": 1,
+        "address_U": 0,
+        "reason_course": 0,
+        "reason_home": 0,
+        "reason_other": 1,
+        "reason_reputation": 0,
+        "guardian_father": 1,
+        "guardian_mother": 0,
+        "guardian_other": 0
+    }'
 
 
+curl.exe -X POST http://127.0.0.1:8000/predire `
+     -H "Content-Type: application/json" ` 
+     -d $body
 ```

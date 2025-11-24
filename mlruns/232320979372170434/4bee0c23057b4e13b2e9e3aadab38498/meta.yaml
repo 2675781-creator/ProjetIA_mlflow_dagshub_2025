@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/232320979372170434/4bee0c23057b4e13b2e9e3aadab38498/artifacts
+end_time: 1763923845625
+entry_point_name: ''
+experiment_id: '232320979372170434'
+lifecycle_stage: active
+run_id: 4bee0c23057b4e13b2e9e3aadab38498
+run_name: Arbre de Décision - Optimisé
+run_uuid: 4bee0c23057b4e13b2e9e3aadab38498
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763923845407
+status: 4
+tags: []
+user_id: '2675781'

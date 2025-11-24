@@ -21,3 +21,19 @@ def charger_modele():
     
     else:
         raise ValueError("MODEL_SOURCE doit être 'local'.")
+
+
+FEATURES_LOCAL_PATH = Path("models/features.pkl")
+ 
+def _load_local_features():
+    """Chargement de la liste des colonnes utilisées à l'entraînement (X_train.columns)."""
+    if not FEATURES_LOCAL_PATH.exists():
+        raise FileNotFoundError(f"Fichier de features introuvable : {FEATURES_LOCAL_PATH.resolve()}")
+    return joblib.load(FEATURES_LOCAL_PATH)
+ 
+@lru_cache
+def charger_features():
+    if MODEL_SOURCE == "local":
+        return _load_local_features()
+    else:
+        raise ValueError("MODEL_SOURCE doit être 'local'.")

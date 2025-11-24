@@ -51,7 +51,12 @@ L'environnement se nomme .projetIA_2025
 Création de dossier et fichier pour etre prêt à déployer l'API
 
 
+# 23 novembre 2025
 # 4 corriger les types variable a utilise
 Certain variables ont du passer de float à int
 
 
+# 23 novembre 2025
+# 5 définition du fichier test_api
+
+Ce fichier me permettra de savoir si mon API fonctionne.

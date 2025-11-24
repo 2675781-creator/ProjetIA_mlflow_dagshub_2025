@@ -2,26 +2,28 @@ import pandas as pd
 from flask import Flask, request, jsonify
 from pydantic import BaseModel, ValidationError
 
-from app.charger_models import charger_modele
+from app.charger_models import charger_modele, charger_features
 
 from app.utilites import log_request
 
 modele = charger_modele()
 
+features = charger_features()
+
 app = Flask(__name__)
 
 
 class DonneesEntree(BaseModel):
-    age: float
-    famsize: float
+    age: int
+    famsize: str
     Medu: int
     Fedu: int
-    Mjob: float
-    Fjob: float
-    traveltime: float
-    studytime: float
-    failures: float
-    famrel: float
+    Mjob: str
+    Fjob: str
+    traveltime: int
+    studytime: int
+    failures: int
+    famrel: int
     freetime: int
     goout: int
     Dalc: int
@@ -30,37 +32,21 @@ class DonneesEntree(BaseModel):
     absences: int
     G1: int
     G2: int
-    school_GP: int
-    school_MS: int
-    romantic_no: int
-    romantic_yes: int
-    internet_no: int
-    internet_yes: int
-    nursery_no: int
-    nursery_yes: int
-    activities_no: int
-    activities_yes: int
-    higher_no: int
-    higher_yes: int
-    paid_no: int
-    paid_yes: int
-    famsup_no: int
-    famsup_yes: int
-    schoolsup_no: int
-    schoolsup_yes: int
-    Pstatus_A: int
-    Pstatus_T: int
-    sex_F: int
-    sex_M: int
-    address_R: int
-    address_U: int
-    reason_course: int
-    reason_home: int
-    reason_other: int
-    reason_reputation: int
-    guardian_father: int
-    guardian_mother: int
-    guardian_other: int
+    G3: int
+    school: str
+    romantic: str
+    internet: str
+    nursery: str
+    activities: str
+    higher: str
+    paid: str
+    famsup: str
+    schoolsup: str
+    Pstatus: str
+    sex: str
+    address: str
+    reason: str
+    guardian: str
 
 
 @app.route("/", methods=["GET"])
@@ -74,8 +60,9 @@ def test():
     return "TEST OK"
 
 
-
 RECALL_TEST = 80.5
+
+
 
 @app.route("/predire", methods=["POST"])
 def predire():
@@ -84,7 +71,6 @@ def predire():
     effectue la prédiction, enregistre la requête,
     puis retourne le résultat.
     """
-
     # S’assurer qu’un JSON a été envoyé
     if not request.json:
         return jsonify({"erreur": "Aucun JSON fourni"}), 400
@@ -97,58 +83,65 @@ def predire():
         donnees_df = pd.DataFrame([donnees.model_dump()])
 
         # 2.b) Adapter les noms de colonnes à ceux utilisés pour entraîner le modèle
-        donnees_df = donnees_df.rename(columns={
-            "school_GP": "school GP",
-            "school_MS": "school MS",
-            "romantic_no": "romantic no",
-            "romantic_yes": "romantic yes",
-            "internet_no": "internet no",
-            "internet_yes": "internet yes",
-            "nursery_no": "nursery no",
-            "nursery_yes": "nursery yes",
-            "activities_no": "activities no",
-            "activities_yes": "activities yes",
-            "higher_no": "higher no",
-            "higher_yes": "higher yes",
-            "paid_no": "paid no",
-            "paid_yes": "paid yes",
-            "famsup_no": "famsup no",
-            "famsup_yes": "famsup yes",
-            "schoolsup_no": "schoolsup no",
-            "schoolsup_yes": "schoolsup yes",
-            "Pstatus_A": "Pstatus A",
-            "Pstatus_T": "Pstatus T",
-            "sex_F": "sex F",
-            "sex_M": "sex M",
-            "address_R": "address R",
-            "address_U": "address U",
-            "reason_course": "reason course",
-            "reason_home": "reason home",
-            "reason_other": "reason other",
-            "reason_reputation": "reason reputation",
-            "guardian_father": "guardian father",
-            "guardian_mother": "guardian mother",
-            "guardian_other": "guardian other"
-        })
+        #donnees_df = donnees_df.rename(columns={
+       #     "school_GP": "school GP",
+       #     "school_MS": "school MS",
+       #     "romantic_no": "romantic no",
+        #    "romantic_yes": "romantic yes",
+        #    "internet_no": "internet no",
+        #    "internet_yes": "internet yes",
+         #   "nursery_no": "nursery no",
+        #    "nursery_yes": "nursery yes",
+         #   "activities_no": "activities no",
+        #    "activities_yes": "activities yes",
+         #   "higher_no": "higher no",
+         #   "higher_yes": "higher yes",
+        #    "paid_no": "paid no",
+         #   "paid_yes": "paid yes",
+          #  "famsup_no": "famsup no",
+          #  "famsup_yes": "famsup yes",
+          #  "schoolsup_no": "schoolsup no",
+           # "schoolsup_yes": "schoolsup yes",
+          #  "Pstatus_A": "Pstatus A",
+          #  "Pstatus_T": "Pstatus T",
+          #  "sex_F": "sex F",
+          #  "sex_M": "sex M",
+          #  "address_R": "address R",
+          #  "address_U": "address U",
+          #  "reason_course": "reason course",
+          #  "reason_home": "reason home",
+          #  "reason_other": "reason other",
+          #  "reason_reputation": "reason reputation",
+          #  "guardian_father": "guardian father",
+          #  "guardian_mother": "guardian mother",
+          #  "guardian_other": "guardian other"
+        #})
 
-        # 3) Faire la prédiction
-        prediction = float(modele.predict(donnees_df)[0])
+        donnees_encoded = pd.get_dummies(donnees_df)
+        
+        donnees_encoded = donnees_encoded.reindex(columns=features, fill_value=0)
+
+        # 3) Faire la prédiction de la classe
+        classe_prediction = int(modele.predict(donnees_encoded)[0])
+
+        # probabilités pour chaque classe
+        probas = modele.predict_proba(donnees_encoded)[0]
         
         # 3.b) Construire un intervalle de confiance SIMPLE
-        borne_inferieure = prediction - RECALL_TEST
-        borne_superieure = prediction + RECALL_TEST
+        #borne_inferieure = prediction - RECALL_TEST
+        #borne_superieure = prediction + RECALL_TEST
 
         # Optionnel : éviter les valeurs négatives si ça n'a pas de sens
-        borne_inferieure = max(0.0, borne_inferieure)
+        #borne_inferieure = max(0.0, borne_inferieure)
 
         # 4) Préparer la réponse
         resultat = donnees.model_dump()
-        resultat["prediction_resistance"] = prediction
-        resultat["intervalle_confiance_min"] = borne_inferieure
-        resultat["intervalle_confiance_max"] = borne_superieure
+        resultat["prediction"] = classe_prediction
+        resultat["probabilite_echec"] = float(probas[0])
+        resultat["probabilite_reussite"] = float(probas[1])
 
         # 5) Enregistrer la requête dans un fichier JSONL pour analyse
-        log_request(donnees.model_dump(), prediction)
+        log_request(donnees.model_dump(), classe_prediction)
 
         # 6) Retourner la réponse à l’utilisateur
         return jsonify({"resultats": resultat})

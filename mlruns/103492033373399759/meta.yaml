@@ -1,0 +1,6 @@
+artifact_location: mlflow-artifacts:/103492033373399759
+creation_time: 1763923661393
+experiment_id: '103492033373399759'
+last_update_time: 1763923661393
+lifecycle_stage: active
+name: teste du modèle de logistique de régression local
