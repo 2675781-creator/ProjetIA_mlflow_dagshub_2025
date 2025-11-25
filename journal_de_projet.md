@@ -3,38 +3,6 @@
 J'ai configurer l'api pour qu'elle fasse les transactions nécessaires pour l'application
 
 
-
-## 1. Structure du projet
-
-Exemple de structure :
-
-```text
-PROJETIA_MLFLOW_DAGSHUB_2025/
-|── .projetIA_2025/
-|   ├──Include
-|   ├──Lib                   # Bibliothèque de l'environnement python
-|   ├──Scripts
-|   ├──share
-|   ├──pyvenv.cfg
-├── app/
-│   ├── __pycache__.py
-│   ├── main.py              # point d'entrée de l'API Flask
-│   ├── charger_modele.py    # chargement du modèle
-│   └── utilites.py          # fonction log_request(...)
-├── code/
-|    ├──dictionnaire_donnees.csv
-|    ├──Student_prediction version 2.ipynb
-|    └──student-por.csv
-├── models/
-│   └── modele_beton.pkl     # modèle entraîné (sérialisé)
-├── test/
-│   └── test_api.py          # script de test optionnel
-├── requetes_enrg.jsonl      # fichier de log des requêtes (optionnel)
-├── requirements.txt         # dépendances minimales pour l’API
-├── Dockerfile               # recette de construction de l’image Docker
-└── .dockerignore            # fichiers à exclure du build (n'est pas vraiment utilisé dans cette démo)
-```
-
 # 22 Novembre 2025
 # 1. Création de la fonction qui chargera le modèle 
 
@@ -61,10 +29,11 @@ Certain variables ont du passer de float à int
 
 Ce fichier me permettra de savoir si mon API fonctionne.
 
+
 # 24 novembre 2025
 # 6 chargement de la liste des colonnes utilisées à l'entrainement (X_train.columns)
 
-Les colonnes d'entrainements situés dans le modèle 'modele_tree.pkl'. Sont utilisée pour s'assurer que notre API utilise les colonnes encodés
+Les colonnes d'entrainements situés dans le modèle 'features.pkl' sont utilisée pour s'assurer que notre API utilise les colonnes encodés
 
 # 24 novembre 2025
 # 7 seuil de d'échec
@@ -74,11 +43,19 @@ Définition du seuil d'échec pour s'assurer que modèle prédit bien si l'étud
 # 24 novembre 2025
 # 8 Dockerfile
 
-Création de l'image du docker
+Création de l'image du docker avec le 'Dockerfile'
 
 
 # 24 novembre 2025 
 # 9 test de différent point d'accès
 
+Les test sont concluent.
 
+
+# 25 novembre 2025
+# Problèmes de prédiction
+
+Avant les prédictions démontrait que l'étudiant va réussir, alors qu'il aurait dû démontrer qu'il allait échoué, ce qui était causé par un déséquilibre des données, donc j'ai dû construire un seuil d'échec pour résoudre ce problème.
+
+Il y avait aussi le problème de l'environnement que j'avais du mal à me connecter donc j'ai créé un nouvel environnement (.projetIA_2025).
 
