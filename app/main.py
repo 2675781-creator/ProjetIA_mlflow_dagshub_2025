@@ -89,7 +89,7 @@ def predire():
 
         #print(donnees_encoded.head())
 
-        # convertir tous les bolléeans en int
+        # convertir tous les boléeans en int
         donnees_encoded = donnees_encoded
         # 3) Faire la prédiction de la classe
         classe_prediction = int(modele.predict(donnees_encoded)[0])

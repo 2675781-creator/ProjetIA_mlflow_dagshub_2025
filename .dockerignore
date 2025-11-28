@@ -3,6 +3,7 @@ mlruns/
 __pycache__/
 .projetIA_2025/
 notebooks/
+__pycache__/
 
 
 # fichier inutile
