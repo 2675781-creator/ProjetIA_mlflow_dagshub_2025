@@ -2,6 +2,7 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+# environnement du travail
 ENV PYTHONPATH=/app
 
 COPY requirements.txt .

@@ -1,4 +1,6 @@
-# README – API de prédiction de l'échec des étudiants'
+# README – API de prédiction de l'échec des étudiants
+
+## Cette API permet de prédire la probabilité d'échec ou de réussite d'un étudiant.
 
 Ce projet montre comment :
 
@@ -7,9 +9,11 @@ Ce projet montre comment :
 3. **Enregistrer les requêtes** dans un fichier
 4. **Consulter** ce qui se trouve dans l’image / le conteneur
 5. **Arrêter** proprement l’API et les logs
-6. **Déployement** sur google cloud
-7. **Test** sur google cloud
-
+6. **Enregister**  les requête dans Docker
+7. Voir ce qu’il y a **dans l’image / le conteneur**
+8. Arrêter proprement le conteneur du **docker**
+9. Installer et initialiser **Google Cloud SDK**
+10. **Déploiement** de l'image de Docker sur Google Cloud
 ---
 
 ## 0. Prérequis
@@ -319,23 +323,30 @@ docker run -p 8000:8000 prediction-etudiante-api
 
 ---
 
-## 9. Résumé pédagogique
+## 9 . Installer et initialiser Google Cloud SDK
+- Installer gcloud (si vous ne l'avez pas):
+```bash
+   pip install gcloud
+```
+- initialiser avec gcloud init
 
-* **Local** :
+---
 
-  * `python -m app.main`
-  * tester `/`, `/formulaire`, `/predire`
-  * logs dans `requetes_enrg.jsonl`
+## 10. Déploiement sur Google Cloud
+Sur la plateform de Google Cloud :
+1. Aller dans Cloud Run
+2. Ouvrir le sélecteur de projet
+3. Cliquer sur "Nouveau projet" et créer un nouveau projet ex:(projetIApredictionetudiant)
+3. Activer la facturation (même pour les quotas gratuits)
+4. Activer les API nécessaires : Cloud Run, Artifact Registry.
 
-* **Docker** :
-
-  * `docker build -t prediction-etudiante-api .`
-  * `docker run -p 8000:8000 prediction-etudiante-api`
-  * option volume pour les logs : `-v "$(pwd)/requetes_enrg.jsonl:/app/requetes_enrg.jsonl"`
-
-* **Logs** :
-
-  * gérés par `log_request(...)` dans `utilites.py`
-  * désactivables en commentant l’appel dans `main.py` si besoin
-
+Dans le terminale :
+1. taguer l'image pour qu'elle soit prête à être pousser dans Artifact Registry;
+   ```bash
+   docker tag prediction-etudiante-api gcr.io/projetiapredictionetudiant/prediction-etudiante-api
+   ```
+2. Pousser l'image sur le Google Cloud
+   ```bash
+   docker push gcr.io/projetiapredictionetudiant/prediction-etudiante-api
+   ```
 ---
