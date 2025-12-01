@@ -16,6 +16,7 @@ COPY models/ models/
 COPY journal_de_projet.md .
 COPY requetes_enrg.jsonl .
 
-EXPOSE 8000
+# 8080 pour le cloud run
+EXPOSE 8080 
 
 CMD ["python", "-m", "app.main"]

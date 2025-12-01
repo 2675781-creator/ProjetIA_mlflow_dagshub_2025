@@ -324,7 +324,8 @@ docker run -p 8000:8000 prediction-etudiante-api
 ---
 
 ## 9 . Installer et initialiser Google Cloud SDK
-- Installer gcloud (si vous ne l'avez pas):
+- Installer l'application : https://cloud.google.com/sdk/docs/install?hl=fr#windows
+- Installer gcloud dans l'Environnement de l'API (si vous ne l'avez pas):
 ```bash
    pip install gcloud
 ```
@@ -340,13 +341,179 @@ Sur la plateform de Google Cloud :
 3. Activer la facturation (même pour les quotas gratuits)
 4. Activer les API nécessaires : Cloud Run, Artifact Registry.
 
+
+# 10.1. Définir les variables
+PROJET_ID ="your-project-id"  # Remplacez par votre ID de projet GCP
+IMAGE_NAME="your-image-name"   # Remplacez par le nom de votre image Docker
+REGION="your-region"    # Remplacez 'your-region' par la région GCP de votre choix
+
 Dans le terminale :
-1. taguer l'image pour qu'elle soit prête à être pousser dans Artifact Registry;
-   ```bash
-   docker tag prediction-etudiante-api gcr.io/projetiapredictionetudiant/prediction-etudiante-api
-   ```
-2. Pousser l'image sur le Google Cloud
-   ```bash
-   docker push gcr.io/projetiapredictionetudiant/prediction-etudiante-api
-   ```
+## Soumettre le build de l'image Docker à Google Container Registry
+gcloud builds submit --tag gcr.io/${PROJET_ID}/${IMAGE_NAME}
+
+## Si vous devez installé le composant 'beta' s'il n'Est pas déjà installé (Optionnel)
+```powershell
+gcloud components install beta
+```
+
+## Sélectionner le compte actif dans le SDK (Optionnel)
+
+1. Changer de compte actif
+```powershell
+gcloud auth login
+
+```
+## 10.2. Lier mon projet au compte de facturation
+
+```powershell
+gcloud beta billing projects link ${PROJET_ID} `
+   --billing-account={ID du compte de facturation}
+```
+
+gcloud beta billing projects link quiet-subset-479914-b9 `
+  --billing-account=01D560-F214D7-332F87
+
+## 10.3. Activer les services nécessaire
+1. cloudbuild
+2. artifactregistry
+
+```powershell
+gcloud services enable cloudbuild.googleapis.com artifactregistry.googleapis.com containerregistry.googleapis.com --project=${ID_PROJET}$
+```
+
+gcloud services enable cloudbuild.googleapis.com artifactregistry.googleapis.com containerregistry.googleapis.com --project=quiet-subset-479914-b9
+
 ---
+
+## 11. Soumettre le build de l'image Docker à Google Container Registry 
+
+## Optionnel - Donner les bons rôles à ton compte 
+1. Service Usage Admin (roles/serviceusage.serviceUsageAdmin)
+```
+gcloud projects add-iam-policy-binding ${ID_PROJET} `
+  --member="user:${YOUR_USER_ACCOUNT}" `
+  --role="roles/serviceusage.serviceUsageAdmin"
+```
+
+gcloud projects add-iam-policy-binding quiet-subset-479914-b9 `
+  --member="user:danielbourcierblake@gmail.com" `
+  --role="roles/serviceusage.serviceUsageAdmin"
+
+2. Cloud Build Editor
+```
+gcloud projects add-iam-policy-binding ${ID_PROJET} `
+  --member="user:${YOUR_USER_ACCOUNT}$" `
+  --role="roles/cloudbuild.builds.editor"
+```
+
+gcloud projects add-iam-policy-binding quiet-subset-479914-b9 `
+  --member="user:danielbourcierblake@gmail.com" `
+  --role="roles/cloudbuild.builds.editor"
+
+##  Réactiver les services nécessaire
+1. cloudbuild
+2. artifactregistry
+
+```powershell
+gcloud services enable cloudbuild.googleapis.com artifactregistry.googleapis.com containerregistry.googleapis.com --project=${ID_PROJET}$
+```
+
+gcloud services enable cloudbuild.googleapis.com artifactregistry.googleapis.com containerregistry.googleapis.com --project=quiet-subset-479914-b9
+
+---
+
+## Créer un dépot Docker
+```Powershell
+gcloud artifacts repositories create prediction-etudiante-repo `
+  --repository-format=docker `
+  --location=us-central1 `
+  --description={"Écriver la fonction de votre dépot docker"} `
+  --project=${PROJET_ID}
+```
+
+gcloud artifacts repositories create prediction-etudiante-repo `
+  --repository-format=docker `
+  --location=us-central1 `
+  --description="Dépôt Docker pour l'API de prédiction étudiante" `
+  --project=quiet-subset-479914-b9
+
+## Activer l'authentification avec Google Cloud
+```Powershell
+   gcloud auth configure-docker
+```
+taper "y" et cliquer sur "Enter"
+
+## Lancer la soumission
+1. Construire localement
+```powershell
+docker build -t gcr.io/${ID_PROJET}/${Nom_du_dépôt}/${IMAGE_NAME_DOCKER}:latest .
+```
+
+docker build -t gcr.io/quiet-subset-479914-b9/prediction-etudiante-repo/prediction-etudiante-api:latest .
+
+2. Pousser l'image de Docker sur Google Cloud dans Artifact Registry
+```powershell
+docker push gcr.io/${ID_PROJET}/${IMAGE_NAME}:latest
+```
+
+docker push gcr.io/quiet-subset-479914-b9/prediction-etudiante-api:latest
+
+--- 
+## En cas d'Erreur
+Si la console affiche cette erreur :
+" WARNING: [user@gmail.com] does not have permission to access projects instance [projetiapredictionetudiant] (or it may not exist): The caller does not have permission. This command is authenticated as user@gmail.com which is the active account specified by the [core/account] property
+Are you sure you wish to set property [core/project] to projetiapredictionetudiant?
+
+Do you want to continue (Y/n)? "
+
+1. Tape "n" et "Enter"
+
+2. Lister vos projets accessibles
+```Powershell
+   gcloud projects list
+```
+
+3. Sélecitonner le bon projet
+```Powershell
+   gcloud config set project ${ID_PROJET}
+```
+gcloud config set project quiet-subset-479914-b9
+
+4. Activer Cloud Run sur ce projet
+
+```Powershell
+gcloud services enable run.googleapis.com --project=${ID_PROJET}
+```
+gcloud services enable run.googleapis.com --project=quiet-subset-479914-b9
+
+---
+
+1. Effectuer le déployment de l'image sur Google Cloud Run
+gcloud run deploy --image gcr.io/${ID_PROJET}/${IMAGE_NAME} --platform managed --region ${REGION}
+
+2. Autoriser les invocations non authentifiées pour ton service que tu a nommé
+
+```Powershell
+y + "Enter"
+```
+## Il faut que mon code Flask soit configuré sur le port 8080 (si ce n'est pas le cas)
+3. Il faut que tu change le port à 8080 sur le ficheir "Main.py" et "Dockerfile"
+
+4. Reconstruis ton image
+```powershell
+docker build -t gcr.io/${ID_PROJET}/${Nom_du_dépôt}/${IMAGE_NAME_DOCKER}:latest .
+```
+
+docker build -t gcr.io/quiet-subset-479914-b9/prediction-etudiante-repo/prediction-etudiante-api:latest .
+
+5. Pousser l'image de Docker sur Google Cloud dans Artifact Registry
+```powershell
+docker push gcr.io/${ID_PROJET}/${IMAGE_NAME}:latest
+```
+
+docker push gcr.io/quiet-subset-479914-b9/prediction-etudiante-api:latest
+
+
+6. Si cela marche, alors le GCP génèrera un lien publique que vous pourriez utiliser pour obtenir des prédictions.
+
+--- 
