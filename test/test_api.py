@@ -1,6 +1,6 @@
 import requests
 
-URL = "http://127.0.0.1:8000/predire"
+URL = "https://etudiant-vjjhestyrq-uc.a.run.app/predire"
 
 donnees_predire = {
     "age": 27,
