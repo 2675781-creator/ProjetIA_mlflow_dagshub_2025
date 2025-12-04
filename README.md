@@ -426,7 +426,7 @@ gcloud artifacts repositories create prediction-etudiante-repo `
 ```
 taper "y" et cliquer sur "Enter"
 
-## 13. Construire et pousser l'image
+## 13. Construire et pousser l'image en format Docker
 1. Construire localement l'image
 ```powershell
 docker build -t us-central1-docker.pkg.dev/${ID_PROJET}/${DEPOT_NAME}/${IMAGE_NAME_DOCKER}:latest .
@@ -508,8 +508,8 @@ curl.exe -v -X POST "https://etudiant-vjjhestyrq-uc.a.run.app/predire" -H "Conte
 
 ## 14 Erreurs
 
-1. On a dû changer le port 8000 pour que le code Flask soit configuré sur le port 8080 (si ce n'est pas le cas)
-Il faut que tu change le port à 8080 sur le fichier "Main.py" et "Dockerfile" si ce n'est pas le cas
+1. On a dû changer le port 8000 pour que le code Flask soit configuré sur le port 8080 pour pouvoir déployé l'API sur Google Cloud SDK
+Il faut que tu change le port à 8080 sur le fichier "Main.py" et "Dockerfile" si ce n'est pas le cas 
 
 2. Il fallait que la version scikit-learn soit à jour à 1.6.1 sur l'image.
 
