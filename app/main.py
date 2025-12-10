@@ -60,7 +60,7 @@ def test():
     return "TEST OK"
 
 
-RECALL_TEST = 80.5
+#RECALL_TEST = 80.5
 
 
 

@@ -331,7 +331,7 @@ docker run -p 8000:8000 prediction-etudiante-api
 ```bash
    pip install gcloud
 ```
-- initialiser avec "gcloud init" dans powershell pour configurer rapidement le SDK Google Cloud lors de la première utilisation. Si vous voulez configurez votre compte et le projet manuellement sur la plateform Cloud ou dans le terminale, elle est donc optionnelle.
+On effectuer notre déployment de façon manuellement.
 
 ---
 
@@ -512,5 +512,3 @@ curl.exe -v -X POST "https://etudiant-vjjhestyrq-uc.a.run.app/predire" -H "Conte
 Il faut que tu change le port à 8080 sur le fichier "Main.py" et "Dockerfile" si ce n'est pas le cas 
 
 2. Il fallait que la version scikit-learn soit à jour à 1.6.1 sur l'image.
-
-
